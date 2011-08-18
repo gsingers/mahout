@@ -43,7 +43,9 @@ import org.apache.mahout.math.MatrixWritable;
 
 import com.google.common.base.Preconditions;
 
-//See http://en.wikipedia.org/wiki/Mahalanobis_distance for details
+/**
+  * See http://en.wikipedia.org/wiki/Mahalanobis_distance for details
+ **/
 public class MahalanobisDistanceMeasure implements DistanceMeasure {
   
   private Matrix inverseCovarianceMatrix;
