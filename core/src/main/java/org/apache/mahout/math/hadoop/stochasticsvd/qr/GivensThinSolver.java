@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.mahout.math.hadoop.stochasticsvd;
+package org.apache.mahout.math.hadoop.stochasticsvd.qr;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -26,6 +26,7 @@ import org.apache.mahout.math.AbstractVector;
 import org.apache.mahout.math.DenseVector;
 import org.apache.mahout.math.Matrix;
 import org.apache.mahout.math.Vector;
+import org.apache.mahout.math.hadoop.stochasticsvd.UpperTriangular;
 
 /**
  * Givens Thin solver. Standard Givens operations are reordered in a way that
@@ -84,7 +85,7 @@ public class GivensThinSolver {
 
     double[] aRow = new double[n];
     for (int i = 0; i < m; i++) {
-      Vector aRowV = a.getRow(i);
+      Vector aRowV = a.viewRow(i);
       for (int j = 0; j < n; j++) {
         aRow[j] = aRowV.getQuick(j);
       }
@@ -219,7 +220,8 @@ public class GivensThinSolver {
   }
 
   private double[] getRRow(int row) {
-    return mR[(row += rStartRow) >= n ? row - n : row];
+    row += rStartRow;
+    return mR[row >= n ? row - n : row];
   }
 
   private void setRRow(int row, double[] rrow) {
@@ -235,7 +237,7 @@ public class GivensThinSolver {
   public UpperTriangular getRTilde() {
     UpperTriangular packedR = new UpperTriangular(n);
     for (int i = 0; i < n; i++) {
-      packedR.assignRow(i, getRRow(i));
+      packedR.assignNonZeroElementsInRow(i, getRRow(i));
     }
     return packedR;
   }

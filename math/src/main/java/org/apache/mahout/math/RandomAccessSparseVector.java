@@ -67,8 +67,7 @@ public class RandomAccessSparseVector extends AbstractVector {
 
   @Override
   protected Matrix matrixLike(int rows, int columns) {
-    int[] cardinality = {rows, columns};
-    return new SparseRowMatrix(cardinality);
+    return new SparseRowMatrix(rows, columns);
   }
 
   @Override
@@ -167,14 +166,6 @@ public class RandomAccessSparseVector extends AbstractVector {
   @Override
   public Iterator<Element> iterator() {
     return new AllIterator();
-  }
-
-  @Override
-  public void addTo(Vector v) {
-    if (v.size() != size()) {
-      throw new CardinalityException(size(), v.size());
-    }
-    values.forEachPair(new AddToVector(v));
   }
 
   @Override

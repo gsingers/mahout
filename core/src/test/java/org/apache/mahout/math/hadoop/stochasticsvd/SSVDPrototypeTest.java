@@ -27,6 +27,7 @@ import org.apache.mahout.math.DenseMatrix;
 import org.apache.mahout.math.Matrix;
 import org.apache.mahout.math.Vector;
 import org.apache.mahout.math.function.DoubleFunction;
+import org.apache.mahout.math.hadoop.stochasticsvd.qr.GivensThinSolver;
 import org.junit.Test;
 
 /** 
@@ -85,7 +86,7 @@ public class SSVDPrototypeTest extends MahoutTestCase {
     int n = mtx.columnSize();
     int rank = 0;
     for (int i = 0; i < n; i++) {
-      Vector ei = mtx.getColumn(i);
+      Vector ei = mtx.viewColumn(i);
 
       double norm = ei.norm(2);
 
@@ -96,7 +97,7 @@ public class SSVDPrototypeTest extends MahoutTestCase {
       }
 
       for (int j = 0; j <= i; j++) {
-        Vector e_j = mtx.getColumn(j);
+        Vector e_j = mtx.viewColumn(j);
         double dot = ei.dot(e_j);
         Assert
             .assertTrue(Math.abs((i == j && rank > j ? 1 : 0) - dot) < epsilon);

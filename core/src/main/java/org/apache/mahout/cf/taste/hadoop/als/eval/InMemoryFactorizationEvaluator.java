@@ -97,7 +97,7 @@ public class InMemoryFactorizationEvaluator extends AbstractJob {
         int itemID = (int) pref.getItemID();
 
         double rating = pref.getValue();
-        double estimate = u.getRow(userID).dot(m.getRow(itemID));
+        double estimate = u.viewRow(userID).dot(m.viewRow(itemID));
         double err = rating - estimate;
         rmseAvg.addDatum(err * err);
         maeAvg.addDatum(Math.abs(err));
@@ -116,7 +116,7 @@ public class InMemoryFactorizationEvaluator extends AbstractJob {
 
   private Matrix readMatrix(Path dir) throws IOException {
 
-    Matrix matrix = new SparseMatrix(new int[] { Integer.MAX_VALUE, Integer.MAX_VALUE });
+    Matrix matrix = new SparseMatrix(Integer.MAX_VALUE, Integer.MAX_VALUE);
 
     FileSystem fs = dir.getFileSystem(getConf());
     for (FileStatus seqFile : fs.globStatus(new Path(dir, "part-*"))) {
